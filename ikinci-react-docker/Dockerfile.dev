@@ -1,0 +1,19 @@
+FROM node:current-alpine
+
+#set working directory of the container
+WORKDIR /app
+
+#çalıştığımız directory /app olduğu için COPY kısmındaki . app'e kopyalayacak yani "/app"="."
+#COPY package.json . ===> ÇALIŞMADI, RUN npm install'da hata verdi
+COPY package*.json ./
+
+RUN npm install
+
+#copy everything from current directory to current directory in container
+COPY . .
+
+ENV REACT_APP_NAME=myName
+
+EXPOSE 3000
+
+CMD ["npm", "start"]

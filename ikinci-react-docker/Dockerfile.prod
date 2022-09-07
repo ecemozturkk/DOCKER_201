@@ -1,0 +1,24 @@
+FROM node:current-alpine as build
+
+#set working directory of the container
+WORKDIR /app
+
+#çalıştığımız directory /app olduğu için COPY kısmındaki . app'e kopyalayacak yani "/app"="."
+#COPY package.json . ===> ÇALIŞMADI, RUN npm install'da hata verdi
+COPY package*.json ./
+
+RUN npm install
+
+#copy everything from current directory to current directory in container
+COPY . .
+
+ARG REACT_APP_NAME
+ENV REACT_APP_NAME=$REACT_APP_NAME
+
+
+RUN npm run build
+
+#FROM nginx:alpine
+FROM nginx
+#from the previous stage called 'build', I want to copy whatever is in the /app/build folder to the /usr/share/nginx/html folder
+COPY --from=build /app/build /usr/share/nginx/html

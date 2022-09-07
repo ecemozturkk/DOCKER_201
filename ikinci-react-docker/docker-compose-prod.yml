@@ -1,0 +1,14 @@
+version: "3"
+services:
+  react_app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      args: 
+        - REACT_APP_NAME=Ecem
+    ports:
+      - "8080:80"
+    environment:
+      - REACT_APP_NAME=Ecem-prod
+      - WATCHPACK_POLLING=true
+
